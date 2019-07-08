@@ -1,0 +1,18 @@
+{% extends 'searchapp/base.html' %}
+<!-- テンプレートの継承先 -->
+<!-- オーバーライド対象：content=子テンプレートのブロック名 -->
+{% block content %}
+<form method="post"  class="form-inline">
+<div id ="container">
+    <select class="form-control">
+        <option></option>
+        <option>サンプル１</option>
+        <option>サンプル２</option>
+        <option>サンプル３</option>
+        <option>サンプル４</option>
+     <label>検索ワード</label>
+     <input type="text" class="form-control" placeholder="フリーワード検索">
+     <button type="button" class="btn btn-default">🔍</button>
+</div>
+</form>
+{% endblock %}
