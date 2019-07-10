@@ -1,11 +1,15 @@
 from django import forms
-from __builtin__ import False
 
-class CategoryForm(forms.Form):
-
-    categoryname = forms.CharFields(
+class GoodsSearchForm(forms.Form):
+    '''
+    categoryname = forms.ChoiceField(
             initial = '',
-            label = 'カテゴリ名',
+            label = '商品名',
             required = False,
-            )
-
+        )
+    '''
+    searchchar = forms.CharField(
+            initial = '',
+            label = '検索文字列',
+            required = False,
+        )
