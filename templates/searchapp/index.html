@@ -6,13 +6,13 @@
 <!-- セキュリティ対策 -->
 {% csrf_token %}
 <div id ="container">
-    <select class="form-control">
+    <!--<select class="form-control">
         <option></option>
         {% for field in categorypulldown %}
         <option>{{ field.categoryname }}</option>
         {% endfor %}
-   </select>
-     <label>検索ワード</label>
+   </select>-->
+     <label>検索条件</label>
      {% for aa in search_value %}
      {{ aa }}
      {% endfor %}

@@ -16,12 +16,14 @@ class IndexView(generic.ListView):
     template_name = 'searchapp/index.html'
     context_object_name = 'categorypulldown' #クエリ結果を格納する変数の名前を定義している
 
+    """
     def get_queryset(self): # 呼び出された（オーバーライドされたメソッド）
 
         #categorypulldown = CategoryTBL.values_list('categoryname', flat=True) カラム指定で取ってこれるらしいがエラー
         categorypulldown = CategoryTBL.objects.select_related().all()
         # 定義されたクエリを発行し、データを変数「categorypulldown」へ格納する。
         return categorypulldown
+    """
 
     '''
     def form_test(request):
@@ -37,13 +39,14 @@ class IndexView(generic.ListView):
         #後からフォームの値を入れるためのリストを作成（リスト名：form_value）
         #if 'button' in self.request.POST:
         form_value = [
-            #self.request.POST.get('categoryname',None),
+            self.request.POST.get('categoryname',None),
             self.request.POST.get('searchchar',None)
         ]
 
         # 検索値を格納するリストをセッションで管理する
         request.session['form_value'] = form_value
-        print(request.session['form_value'])
+        #print(form_value[1]) #変数の中にリストがある場合リストの値が取れるのか知りたかった、できるよ。
+        #print(request.session['form_value']) #フォームの値が取れてるのか確認したかった！！！！！
         # generic/list.pyのget()メソッドが呼び出される
         return self.get(request, *args, **kwargs)
 
@@ -56,24 +59,44 @@ class IndexView(generic.ListView):
         #contextというテンプレートタグに使用できる変数を作成している
         context = super().get_context_data(**kwargs)
 
-        #categoryname = ''
+        categoryname = ''
         searchchar = ''
 
         # 最初はセッションに値が無いからこのif節は呼ばれない
         if 'form_value' in self.request.session:
             form_value = self.request.session['form_value']
-            #categoryname = form_value[0]
+            categoryname = form_value[0]
+            #print(form_value[1])
             #categoryname = CategoryTBL.objects.select_related().all()
             searchchar = form_value[1]
 
         # 辞書新規作成⇒初期値ではそれぞれ「空白」が設定
         default_data = { 'searchchar' :searchchar}
-        #default_data = {'categoryname' :categoryname, 'searchchar' :searchchar}
+        default_data = {'categoryname' :categoryname, 'searchchar' :searchchar}
 
         # 入力フォームに初期値では空白を設定する処理
         search_form = GoodsSearchForm(initial = default_data)
 
         # 入力フォームに空白を指定したテンプレートを呼び出し、返却する処理
         context['search_value'] = search_form
-        print(search_form)
         return context
+
+    def get_queryset(self,**kwargs):
+        #contextでもやった処理をもう一度やるのは変だけどコンテキストに続けるやり方わからないので…。
+        form_value = self.request.session['form_value']
+        print(self.request.session['form_value'])
+        #入力値（カテゴリプルダウンと入力フォーム）が空白どうかの条件分岐if文
+        if form_value[0:1]==[''] :
+            print('かてごりなし')
+            if form_value[1:2]==['']:
+                print('もじなし')
+            else:
+                print('もじあり')
+        else:
+            print('かてごりあり')
+            if form_value[1:2]==['']:
+                print('もじなし')
+            else:
+                print('もじあり')
+
+
