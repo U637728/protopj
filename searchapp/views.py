@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic.base import TemplateView
 from .models import CategoryTBL
+from .models import GoodsTBL
 from django.views import generic
 from django.db.models import Q
 from .forms import GoodsSearchForm
@@ -12,9 +13,9 @@ from .forms import GoodsSearchForm
 
 class IndexView(generic.ListView):
 
-    model = CategoryTBL
+    model = GoodsTBL
     template_name = 'searchapp/index.html'
-    context_object_name = 'categorypulldown' #クエリ結果を格納する変数の名前を定義している
+    context_object_name = 'GoodsSearchResult' #クエリ結果を格納する変数の名前を定義している
 
     """
     def get_queryset(self): # 呼び出された（オーバーライドされたメソッド）
@@ -81,22 +82,43 @@ class IndexView(generic.ListView):
         context['search_value'] = search_form
         return context
 
+
     def get_queryset(self,**kwargs):
         #contextでもやった処理をもう一度やるのは変だけどコンテキストに続けるやり方わからないので…。
-        form_value = self.request.session['form_value']
-        print(self.request.session['form_value'])
-        #入力値（カテゴリプルダウンと入力フォーム）が空白どうかの条件分岐if文
-        if form_value[0:1]==[''] :
-            print('かてごりなし')
-            if form_value[1:2]==['']:
-                print('もじなし')
+        if 'form_value' in self.request.session:
+            form_value = self.request.session['form_value']
+            categoryname = form_value[0]
+            searchchar = form_value[1]
+            print(self.request.session['form_value'])
+            #入力値（カテゴリプルダウンと入力フォーム）が空白どうかの条件分岐if文
+            if form_value[0:1]==[''] :
+                #print('かてごりなし')
+                if form_value[1:2]==['']:
+                    #print('もじなし') #カテゴリなし文字なし
+                    GoodsSearchResult = GoodsTBL.objects.select_related().all().values('goodsname').distinct()
+                    return GoodsSearchResult
+                else:
+                    #print('もじあり') #カテゴリなし文字あり
+                    name=Q(goodsname__contains=searchchar)
+                    color=Q(colorname__contains=searchchar)
+                    price=Q(price__contains=searchchar)
+                    size=Q(sizename__contains=searchchar)
+                    GoodsSearchResult = GoodsTBL.objects.select_related().filter(name | color | price | size).values('goodsname').distinct()
+                    return GoodsSearchResult
             else:
-                print('もじあり')
-        else:
-            print('かてごりあり')
-            if form_value[1:2]==['']:
-                print('もじなし')
-            else:
-                print('もじあり')
-
+                #print('かてごりあり')
+                if form_value[1:2]==['']:
+                    #print('もじなし') #カテゴリあり文字なし
+                    cate=Q(categoryid__exact=categoryname)
+                    GoodsSearchResult = GoodsTBL.objects.select_related().filter(cate).values('goodsname').distinct()
+                    return GoodsSearchResult
+                else:
+                    #print('もじあり') #カテゴリあり文字あり
+                    cate=Q(categoryid__exact=categoryname)
+                    name=Q(goodsname__contains=searchchar)
+                    color=Q(colorname__contains=searchchar)
+                    price=Q(price__contains=searchchar)
+                    size=Q(sizename__contains=searchchar)
+                    GoodsSearchResult = GoodsTBL.objects.select_related().filter(name,cate | color,cate | price,cate | size,cate).values('goodsname').distinct()
+                    return GoodsSearchResult
 

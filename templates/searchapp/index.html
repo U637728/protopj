@@ -18,7 +18,11 @@
      {% endfor %}
      <!--<input type="text" class="form-control" placeholder="フリーワード検索">-->
      <input class="btn btn-success offset-md-8 col-md-3" type="submit" id="button" name="button" value="🔍">
-
 </div>
 </form>
+
+{% for field in GoodsSearchResult %}
+    {{field.goodsname}}
+{% endfor %}
+
 {% endblock %}
