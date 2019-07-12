@@ -6,10 +6,15 @@ from .models import GoodsTBL
 from django.views import generic
 from django.db.models import Q
 from .forms import GoodsSearchForm
+from django.shortcuts import render_to_response
 
 
 # Create your views here.
-#class test_View(TemplateView):
+'''
+class test_View(TemplateView):
+    template_name = 'searchapp/result.html'
+    index=test_View.as_view()
+'''
 
 class IndexView(generic.ListView):
 
@@ -49,7 +54,42 @@ class IndexView(generic.ListView):
         #print(form_value[1]) #変数の中にリストがある場合リストの値が取れるのか知りたかった、できるよ。
         #print(request.session['form_value']) #フォームの値が取れてるのか確認したかった！！！！！
         # generic/list.pyのget()メソッドが呼び出される
-        return self.get(request, *args, **kwargs)
+
+        if 'form_value' in self.request.session:
+                    form_value = self.request.session['form_value']
+                    categoryname = form_value[0]
+                    searchchar = form_value[1]
+                    print(self.request.session['form_value'])
+                    #入力値（カテゴリプルダウンと入力フォーム）が空白どうかの条件分岐if文
+                    if form_value[0:1]==[''] :
+                        #print('かてごりなし')
+                        if form_value[1:2]==['']:
+                            #print('もじなし') #カテゴリなし文字なし
+                            GoodsSearchResult = GoodsTBL.objects.select_related().all().values('goodsname').distinct()
+                        else:
+                            #print('もじあり') #カテゴリなし文字あり
+                            name=Q(goodsname__contains=searchchar)
+                            color=Q(colorname__contains=searchchar)
+                            price=Q(price__contains=searchchar)
+                            size=Q(sizename__contains=searchchar)
+                            GoodsSearchResult = GoodsTBL.objects.select_related().filter(name | color | price | size).values('goodsname').distinct()
+                    else:
+                        #print('かてごりあり')
+                        if form_value[1:2]==['']:
+                            #print('もじなし') #カテゴリあり文字なし
+                            cate=Q(categoryid__exact=categoryname)
+                            GoodsSearchResult = GoodsTBL.objects.select_related().filter(cate).values('goodsname').distinct()
+                        else:
+                            #print('もじあり') #カテゴリあり文字あり
+                            cate=Q(categoryid__exact=categoryname)
+                            name=Q(goodsname__contains=searchchar)
+                            color=Q(colorname__contains=searchchar)
+                            price=Q(price__contains=searchchar)
+                            size=Q(sizename__contains=searchchar)
+                            GoodsSearchResult = GoodsTBL.objects.select_related().filter(name,cate | color,cate | price,cate | size,cate).values('goodsname').distinct()
+
+        #return self.get(request, *args, **kwargs)
+        return render(request, 'searchapp/result.html',{'GoodsSearchResult':GoodsSearchResult})
 
     def get_context_data(self, **kwargs):
         """
@@ -82,8 +122,9 @@ class IndexView(generic.ListView):
         context['search_value'] = search_form
         return context
 
-
+    '''
     def get_queryset(self,**kwargs):
+
         #contextでもやった処理をもう一度やるのは変だけどコンテキストに続けるやり方わからないので…。
         if 'form_value' in self.request.session:
             form_value = self.request.session['form_value']
@@ -96,7 +137,6 @@ class IndexView(generic.ListView):
                 if form_value[1:2]==['']:
                     #print('もじなし') #カテゴリなし文字なし
                     GoodsSearchResult = GoodsTBL.objects.select_related().all().values('goodsname').distinct()
-                    return GoodsSearchResult
                 else:
                     #print('もじあり') #カテゴリなし文字あり
                     name=Q(goodsname__contains=searchchar)
@@ -104,14 +144,12 @@ class IndexView(generic.ListView):
                     price=Q(price__contains=searchchar)
                     size=Q(sizename__contains=searchchar)
                     GoodsSearchResult = GoodsTBL.objects.select_related().filter(name | color | price | size).values('goodsname').distinct()
-                    return GoodsSearchResult
             else:
                 #print('かてごりあり')
                 if form_value[1:2]==['']:
                     #print('もじなし') #カテゴリあり文字なし
                     cate=Q(categoryid__exact=categoryname)
                     GoodsSearchResult = GoodsTBL.objects.select_related().filter(cate).values('goodsname').distinct()
-                    return GoodsSearchResult
                 else:
                     #print('もじあり') #カテゴリあり文字あり
                     cate=Q(categoryid__exact=categoryname)
@@ -120,5 +158,6 @@ class IndexView(generic.ListView):
                     price=Q(price__contains=searchchar)
                     size=Q(sizename__contains=searchchar)
                     GoodsSearchResult = GoodsTBL.objects.select_related().filter(name,cate | color,cate | price,cate | size,cate).values('goodsname').distinct()
-                    return GoodsSearchResult
-
+            #return GoodsSearchResult
+            return GoodsSearchResult
+            '''

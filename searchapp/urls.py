@@ -7,6 +7,7 @@ app_name = 'searchapp'
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+    #path('result/', views.test_View.as_view(), name='result'),
     #path('', views.Index, name='index'),
 ]
 
