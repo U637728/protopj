@@ -60,6 +60,13 @@ class IndexView(generic.ListView):
                     categoryname = form_value[0]
                     searchchar = form_value[1]
                     print(self.request.session['form_value'])
+                    #クエリ一覧
+                    cate=Q(categoryid__exact=categoryname)
+                    name=Q(goodsname__contains=searchchar)
+                    color=Q(colorname__contains=searchchar)
+                    price=Q(price__contains=searchchar)
+                    size=Q(sizename__contains=searchchar)
+
                     #入力値（カテゴリプルダウンと入力フォーム）が空白どうかの条件分岐if文
                     if form_value[0:1]==[''] :
                         #print('かてごりなし')
@@ -68,24 +75,14 @@ class IndexView(generic.ListView):
                             GoodsSearchResult = GoodsTBL.objects.select_related().all().values('goodsname').distinct()
                         else:
                             #print('もじあり') #カテゴリなし文字あり
-                            name=Q(goodsname__contains=searchchar)
-                            color=Q(colorname__contains=searchchar)
-                            price=Q(price__contains=searchchar)
-                            size=Q(sizename__contains=searchchar)
                             GoodsSearchResult = GoodsTBL.objects.select_related().filter(name | color | price | size).values('goodsname').distinct()
                     else:
                         #print('かてごりあり')
                         if form_value[1:2]==['']:
                             #print('もじなし') #カテゴリあり文字なし
-                            cate=Q(categoryid__exact=categoryname)
                             GoodsSearchResult = GoodsTBL.objects.select_related().filter(cate).values('goodsname').distinct()
                         else:
                             #print('もじあり') #カテゴリあり文字あり
-                            cate=Q(categoryid__exact=categoryname)
-                            name=Q(goodsname__contains=searchchar)
-                            color=Q(colorname__contains=searchchar)
-                            price=Q(price__contains=searchchar)
-                            size=Q(sizename__contains=searchchar)
                             GoodsSearchResult = GoodsTBL.objects.select_related().filter(name,cate | color,cate | price,cate | size,cate).values('goodsname').distinct()
 
         #return self.get(request, *args, **kwargs)

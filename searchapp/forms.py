@@ -1,5 +1,6 @@
 from django import forms
 from . import models
+from .models import CategoryTBL
 
 class GoodsSearchForm(forms.Form):
     '''
@@ -11,6 +12,7 @@ class GoodsSearchForm(forms.Form):
     '''
     categoryname = forms.ModelChoiceField(
             models.CategoryTBL.objects,
+            #queryset=CategoryTBL.objects.all(),
             label = '商品名',
             required = False,
         )
@@ -21,4 +23,9 @@ class GoodsSearchForm(forms.Form):
             required = False,
         )
 
+'''
+class GoodsSearchForm(forms.ModelChoiceField):
+    def label_from_instance(self,categoryname):
+         return f'{CategoryTBL.categoryname}'
 # product = forms.ModelChoiceField(models.Product.objects, label='商品')
+'''
