@@ -7,6 +7,9 @@ from django.views import generic
 from django.db.models import Q
 from .forms import GoodsSearchForm
 from django.shortcuts import render_to_response
+from .forms import CategorySearchField
+from .forms import CategorySearchForm
+from django.forms import ModelChoiceField
 
 
 # Create your views here.
@@ -108,14 +111,16 @@ class IndexView(generic.ListView):
             searchchar = form_value[1]
 
         # 辞書新規作成⇒初期値ではそれぞれ「空白」が設定
-        default_data = { 'searchchar' :searchchar}
+        #default_data = { 'searchchar' :searchchar}
         default_data = {'categoryname' :categoryname, 'searchchar' :searchchar}
 
         # 入力フォームに初期値では空白を設定する処理
         search_form = GoodsSearchForm(initial = default_data)
+        category_form =CategorySearchForm(initial = default_data)
+        #category_form =CategorySearchField(queryset=CategoryTBL.objects.all())
 
         # 入力フォームに空白を指定したテンプレートを呼び出し、返却する処理
-        context['search_value'] = search_form
+        context['search_value'] = [category_form,search_for]
         return context
 
     '''

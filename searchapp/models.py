@@ -132,3 +132,4 @@ class HighCategoryTBL(models.Model):
     # 管理サイトに表示させる文字列を定義
     def __str__(self):
         return self.highcategoryid
+
