@@ -24,7 +24,6 @@ class IndexView(generic.ListView):
 
     """
     def get_queryset(self): # 呼び出された（オーバーライドされたメソッド）
-
         #categorypulldown = CategoryTBL.values_list('categoryname', flat=True) カラム指定で取ってこれるらしいがエラー
         categorypulldown = CategoryTBL.objects.select_related().all()
         # 定義されたクエリを発行し、データを変数「categorypulldown」へ格納する。
@@ -121,7 +120,6 @@ class IndexView(generic.ListView):
 
     '''
     def get_queryset(self,**kwargs):
-
         #contextでもやった処理をもう一度やるのは変だけどコンテキストに続けるやり方わからないので…。
         if 'form_value' in self.request.session:
             form_value = self.request.session['form_value']

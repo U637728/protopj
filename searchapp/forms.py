@@ -12,9 +12,9 @@ class GoodsSearchForm(forms.Form):
     '''
     categoryname = forms.ModelChoiceField(
             models.CategoryTBL.objects,
-            #queryset=CategoryTBL.objects.all(),
             label = '商品名',
             required = False,
+            #queryset = CategoryTBL.objects.values('categoryname'),
         )
 
     searchchar = forms.CharField(
