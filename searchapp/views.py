@@ -120,7 +120,7 @@ class IndexView(generic.ListView):
         #category_form =CategorySearchField(queryset=CategoryTBL.objects.all())
 
         # 入力フォームに空白を指定したテンプレートを呼び出し、返却する処理
-        context['search_value'] = [category_form,search_for]
+        context['search_value'] = [category_form,search_form]
         return context
 
     '''
