@@ -25,22 +25,6 @@ class IndexView(generic.ListView):
     template_name = 'searchapp/index.html'
     context_object_name = 'GoodsSearchResult' #クエリ結果を格納する変数の名前を定義している
 
-    """
-    def get_queryset(self): # 呼び出された（オーバーライドされたメソッド）
-        #categorypulldown = CategoryTBL.values_list('categoryname', flat=True) カラム指定で取ってこれるらしいがエラー
-        categorypulldown = CategoryTBL.objects.select_related().all()
-        # 定義されたクエリを発行し、データを変数「categorypulldown」へ格納する。
-        return categorypulldown
-    """
-
-    '''
-    def form_test(request):
-        if  'button_1' in request.GET:
-            form = GoodsSearchForm(request.GET)
-            if form.is_valid():
-                d = form.cleaned_data['searchchar']
-    '''
-
     def post(self, request, *args, **kwargs):
         #フォーム値をセッションに格納（他画面で使いたい）
 
@@ -54,7 +38,7 @@ class IndexView(generic.ListView):
         # 検索値を格納するリストをセッションで管理する
         request.session['form_value'] = form_value
         #print(form_value[1]) #変数の中にリストがある場合リストの値が取れるのか知りたかった、できるよ。
-        #print(request.session['form_value']) #フォームの値が取れてるのか確認したかった！！！！！
+        #print(request.session['form_value']) #フォームの値がセッションの中に取れてるのか確認したかった！
         # generic/list.pyのget()メソッドが呼び出される
 
         if 'form_value' in self.request.session:
@@ -62,6 +46,7 @@ class IndexView(generic.ListView):
                     categoryname = form_value[0]
                     searchchar = form_value[1]
                     print(self.request.session['form_value'])
+                    #print(searchchar)
                     #クエリ一覧
                     cate=Q(categoryid__exact=categoryname)
                     name=Q(goodsname__contains=searchchar)
@@ -71,21 +56,19 @@ class IndexView(generic.ListView):
 
                     #入力値（カテゴリプルダウンと入力フォーム）が空白どうかの条件分岐if文
                     if form_value[0:1]==[''] :
-                        #print('かてごりなし')
                         if form_value[1:2]==['']:
-                            #print('もじなし') #カテゴリなし文字なし
-                            GoodsSearchResult = GoodsTBL.objects.select_related().all().values('goodsname').distinct()
+                            #カテゴリ×文字×
+                            GoodsSearchResult = GoodsTBL.objects.select_related().all().values('goodsname').order_by('-salesstartdate').distinct()
                         else:
-                            #print('もじあり') #カテゴリなし文字あり
-                            GoodsSearchResult = GoodsTBL.objects.select_related().filter(name | color | price | size).values('goodsname').distinct()
+                            #カテゴリ×文字〇
+                            GoodsSearchResult = GoodsTBL.objects.select_related().filter(name | color | price | size).values('goodsname').order_by('-salesstartdate').distinct()
                     else:
-                        #print('かてごりあり')
                         if form_value[1:2]==['']:
-                            #print('もじなし') #カテゴリあり文字なし
-                            GoodsSearchResult = GoodsTBL.objects.select_related().filter(cate).values('goodsname').distinct()
+                            #カテゴリ〇文字×
+                            GoodsSearchResult = GoodsTBL.objects.select_related().filter(cate).values('goodsname').order_by('-salesstartdate').distinct()
                         else:
-                            #print('もじあり') #カテゴリあり文字あり
-                            GoodsSearchResult = GoodsTBL.objects.select_related().filter(name,cate | color,cate | price,cate | size,cate).values('goodsname').distinct()
+                            #カテゴリ〇文字〇
+                            GoodsSearchResult = GoodsTBL.objects.select_related().filter(name,cate | color,cate | price,cate | size,cate).values('goodsname').order_by('-salesstartdate').distinct()
 
         #return self.get(request, *args, **kwargs)
         return render(request, 'searchapp/result.html',{'GoodsSearchResult':GoodsSearchResult})

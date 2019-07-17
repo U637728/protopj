@@ -45,7 +45,7 @@ class CategorySearchForm(forms.Form):
     categoryname = CategorySearchField(
             #models.CategoryTBL.objects,
             label = '',
-            #required = False,
+            required = False,
             queryset=CategoryTBL.objects.all(),
             #to_field_name='categoryname',
         )
