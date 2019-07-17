@@ -1,9 +1,10 @@
-from django import forms
 from . import models
+
+from django import forms
+
 from .models import CategoryTBL
 from django.forms import ModelChoiceField
 
-#category_choice = CategoryTBL
 
 """
 class GoodsSearchForm(forms.Form):
@@ -42,7 +43,7 @@ class CategorySearchField(forms.ModelChoiceField):
 
 
 class CategorySearchForm(forms.Form):
-    categoryname = CategorySearchField(
+    category_name = CategorySearchField(
             #models.CategoryTBL.objects,
             label = '',
             required = False,
@@ -51,7 +52,7 @@ class CategorySearchForm(forms.Form):
         )
 
 class GoodsSearchForm(forms.Form):
-    searchchar = forms.CharField(
+    search_char = forms.CharField(
             initial = '',
             label = '',
             required = False,

@@ -5,8 +5,8 @@
 <!-- セキュリティ対策 -->
 {% csrf_token %}
 
-{% for field in GoodsSearchResult %}
-    {{field.goodsname}}
+{% for field in goods_search_result %}
+    <a href="">{{field.goodsname}}</a>
 {% endfor %}
 
 {% endblock %}
