@@ -7,7 +7,6 @@ class GoodsTBL(models.Model):
 
     class Meta:  # テーブル名を定義
         db_table = 'goodstbl'
-        ordering=('-salesstartdate',)
 
     # テーブルのカラムに対応するフィールドを定義
     # max_lengthは単純な文字数。半角全角、英数字関係なく合計でその文字数入るという設定

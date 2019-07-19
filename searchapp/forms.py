@@ -9,13 +9,6 @@ from django.forms import ModelChoiceField
 """
 class GoodsSearchForm(forms.Form):
     '''
-    categoryname = forms.ChoiceField(
-            initial = '',
-            label = '商品名',
-            choice = category_choice,
-            required = False,
-        )
-    '''
     categoryname = forms.ModelChoiceField(
             models.CategoryTBL.objects,
             label = '商品名',

@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'searchapp.apps.SearchappConfig', #アプリ紐付け
-    'bootstrap4' #bootstrap4紐付け
+    'bootstrap4', #bootstrap4紐付け
 ]
 
 MIDDLEWARE = [
@@ -142,3 +142,42 @@ STATIC_ROOT = '/var/www/{}/static' .format(PROJECT_NAME)
 
 SESSION_COOKIE_AGE = 600
 SESSION_SAVE_EVERY_REQUEST = True
+
+INTERNAL_IPS = [
+     '127.0.0.1',
+]
+SHOW_TOOLBAR_CALLBACK =False
+
+# ログ取得
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+    }
+}
+
+'''
+if DEBUG:
+    def show_toolbar(request):
+        return True
+
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+    MIDDLEWARE += [
+        'debug_toolbar_middleware.DebugToolbarMiddleware',
+    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': show_toolbar
+    }
+'''
