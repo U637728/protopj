@@ -1,11 +1,12 @@
 from django.db.models import Count
 from django.db.models import Q
 from django.db.models.query import QuerySet
+from django.shortcuts import redirect
 from django.shortcuts import render
-from django.shortcuts import render_to_response
 from django.views import generic
 from django.views import View
 from django.views.generic.base import TemplateView
+from django.urls import reverse
 
 from .forms import CategorySearchField
 from .forms import CategorySearchForm
@@ -13,6 +14,7 @@ from .models import CategoryTBL
 from .forms import GoodsSearchForm
 from .models import GoodsTBL
 from django.forms import ModelChoiceField
+from lib2to3.fixes.fix_input import context
 
 
 '''
@@ -41,6 +43,11 @@ class IndexView(generic.ListView):
         その値を元に商品の検索を実行
         検索結果をresult.htmlに返却する。
         """
+
+
+        self.get(request)
+        #print(self.get(request))
+        return redirect('searchapp:result')
 
 
         #②-1(taguchi)
@@ -116,8 +123,11 @@ class IndexView(generic.ListView):
                     #②-5で作成された検索結果goods_search_resultを
                     #searchapp/result.htmlに返却し、結果を表示する。
 
+            '''
             return render(request, 'searchapp/result.html',
                           {'goods_search_result':goods_search_result})
+            '''
+
 
 
     def get_context_data(self, **kwargs):#①-2(taguchi)
@@ -134,6 +144,7 @@ class IndexView(generic.ListView):
         #category\name、search_charにそれぞれ空白の文字列を設定する
         category_name = ''
         search_char = ''
+
 
         '''
         # 最初はセッションに値が無いからこのif節は呼ばれない
@@ -164,4 +175,15 @@ class IndexView(generic.ListView):
         #フォームの入っているリスト'search_value'をテンプレートに返す。
         #※contextって辞書型じゃないといけないと思うんだけどなんでこれでいいのかはわからない…。
         context['search_value'] = [category_form,search_form]
+        print(context['search_value'])
+        testquery = GoodsTBL.objects.all()
+        context['testquery']=testquery
+        #self.request.session['test1'] = context['testquery']
+
         return context
+
+
+class ResultList(generic.ListView):
+    model = GoodsTBL
+    template_name = 'searchapp/result.html'
+
