@@ -43,11 +43,11 @@ class IndexView(generic.ListView):
         その値を元に商品の検索を実行
         検索結果をresult.htmlに返却する。
         """
-
-
+        '''
+    #※※redirctの返し方はここを見る※※
         self.get(request)
-        #print(self.get(request))
         return redirect('searchapp:result')
+        '''
 
 
         #②-1(taguchi)
@@ -95,10 +95,30 @@ class IndexView(generic.ListView):
                 if (
                     form_value[1:2]==['']):
                     #カテゴリ×文字×
+                    '''
                     goods_search_result = \
                     GoodsTBL.objects.select_related().filter(q_ronsaku)\
                     .order_by('-salesstartdate').values('goodsname').distinct()
                     print(goods_search_result)
+
+                    goods_search_result =[]
+                    goods_search_result=GoodsTBL.objects.all().values('productno').annotate(count=Count('productno')).order_by('-salesstartdate')
+                    print(goods_search_result)
+
+                    '''
+
+                    a =GoodsTBL.objects.all().values('goodsname','categoryid','price','productno').order_by('-salesstartdate')
+                    print(a)
+                    result_dict={}
+                    for k in a:
+                        print(k)
+
+
+
+                    #print(goods_search_result)
+
+
+
                 else:
                     #カテゴリ×文字〇
                     goods_search_result = \
@@ -123,10 +143,11 @@ class IndexView(generic.ListView):
                     #②-5で作成された検索結果goods_search_resultを
                     #searchapp/result.htmlに返却し、結果を表示する。
 
-            '''
+
             return render(request, 'searchapp/result.html',
                           {'goods_search_result':goods_search_result})
-            '''
+            print(goods_search_result)
+
 
 
 
@@ -175,7 +196,6 @@ class IndexView(generic.ListView):
         #フォームの入っているリスト'search_value'をテンプレートに返す。
         #※contextって辞書型じゃないといけないと思うんだけどなんでこれでいいのかはわからない…。
         context['search_value'] = [category_form,search_form]
-        print(context['search_value'])
         testquery = GoodsTBL.objects.all()
         context['testquery']=testquery
         #self.request.session['test1'] = context['testquery']
