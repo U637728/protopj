@@ -5,8 +5,10 @@
 <!-- セキュリティ対策 -->
 {% csrf_token %}
 
-{% for field in goods_search_result %}
+{% for field in result_list %}
     {{ field.goodsname }}
+    {{ field.categoryid.categoryname }}
+    {{ field.price }}
 {% endfor %}
 
 {% endblock %}

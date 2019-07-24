@@ -100,18 +100,37 @@ class IndexView(generic.ListView):
                     GoodsTBL.objects.select_related().filter(q_ronsaku)\
                     .order_by('-salesstartdate').values('goodsname').distinct()
                     print(goods_search_result)
-
                     goods_search_result =[]
                     goods_search_result=GoodsTBL.objects.all().values('productno').annotate(count=Count('productno')).order_by('-salesstartdate')
                     print(goods_search_result)
-
                     '''
 
-                    a =GoodsTBL.objects.all().values('goodsname','categoryid','price','productno').order_by('-salesstartdate')
-                    print(a)
-                    result_dict={}
+                    a =GoodsTBL.objects.all().order_by('-salesstartdate')
+                    #print(a)
+                    result_list=[]
                     for k in a:
-                        print(k)
+                        #productno_list=[d.get('productno') for d in result_list]
+                        productno_list=[d.productno for d in result_list]
+                        print(productno_list)
+                        b=k.productno
+                        print(k.categoryid.categoryname)
+                        if b in productno_list:
+                            print('かぶった！')
+                        else:
+                            result_list.append(k)
+                            print(k)
+                            print(result_list)
+                        #print([d.get('productno') for d in a])
+
+
+                        '''
+                        if b in [d.get('productno') for d in result_list]
+                            print('かぶった！')
+                        else:
+                            result_list.append(k)
+                            print('test')
+                            print(result_list)
+                        '''
 
 
 
@@ -145,7 +164,7 @@ class IndexView(generic.ListView):
 
 
             return render(request, 'searchapp/result.html',
-                          {'goods_search_result':goods_search_result})
+                          {'result_list':result_list})
             print(goods_search_result)
 
 
@@ -206,4 +225,3 @@ class IndexView(generic.ListView):
 class ResultList(generic.ListView):
     model = GoodsTBL
     template_name = 'searchapp/result.html'
-
