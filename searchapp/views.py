@@ -95,79 +95,48 @@ class IndexView(generic.ListView):
                 if (
                     form_value[1:2]==['']):
                     #カテゴリ×文字×
-                    '''
-                    goods_search_result = \
-                    GoodsTBL.objects.select_related().filter(q_ronsaku)\
-                    .order_by('-salesstartdate').values('goodsname').distinct()
-                    print(goods_search_result)
-                    goods_search_result =[]
-                    goods_search_result=GoodsTBL.objects.all().values('productno').annotate(count=Count('productno')).order_by('-salesstartdate')
-                    print(goods_search_result)
-                    '''
-
-                    a =GoodsTBL.objects.all().order_by('-salesstartdate')
-                    #print(a)
-                    result_list=[]
-                    for k in a:
-                        #productno_list=[d.get('productno') for d in result_list]
-                        productno_list=[d.productno for d in result_list]
-                        print(productno_list)
-                        b=k.productno
-                        print(k.categoryid.categoryname)
-                        if b in productno_list:
-                            print('かぶった！')
-                        else:
-                            result_list.append(k)
-                            print(k)
-                            print(result_list)
-                        #print([d.get('productno') for d in a])
-
-
-                        '''
-                        if b in [d.get('productno') for d in result_list]
-                            print('かぶった！')
-                        else:
-                            result_list.append(k)
-                            print('test')
-                            print(result_list)
-                        '''
-
-
-
-                    #print(goods_search_result)
-
-
-
+                    goods_search_result =GoodsTBL.objects. \
+                    filter(q_ronsaku).order_by('-salesstartdate')
                 else:
                     #カテゴリ×文字〇
                     goods_search_result = \
                     GoodsTBL.objects.select_related()\
-                    .filter(q_name | q_color | q_price | q_size).distinct()\
+                    .filter(q_name | q_color | q_price | q_size)\
                     .order_by('-salesstartdate')
             else:
                 if form_value[1:2]==['']:
                     #カテゴリ〇文字×
                     goods_search_result = \
                     GoodsTBL.objects.select_related()\
-                    .filter(q_cate,q_ronsaku).values('goodsname').distinct()\
+                    .filter(q_cate,q_ronsaku)\
                     .order_by('-salesstartdate')
                 else:
                     #カテゴリ〇文字〇
                     goods_search_result = \
                     GoodsTBL.objects.select_related()\
                     .filter( q_cate, ( q_name | q_color | q_price | q_size))\
-                    .values('goodsname').distinct().order_by('-salesstartdate')
+                    .order_by('-salesstartdate')
                     print(goods_search_result)
-                    #②-6(taguchi)
-                    #②-5で作成された検索結果goods_search_resultを
-                    #searchapp/result.htmlに返却し、結果を表示する。
+
+            #②-6(taguchi)
+            #②-5で作成された検索結果goods_search_resultを
+            #for文で回し、製品番号が表示用リストに格納されている
+            #製品番号と被っていなければ、表示用リストにクエリオブジェクトを追加する処理
+
+            result_list=[]
+            for k in goods_search_result:
+                productno_list=[d.productno for d in result_list]
+                b=k.productno
+                print(k.categoryid.categoryname)
+                if b in productno_list:
+                    pass
+                else:
+                    result_list.append(k)
 
 
-            return render(request, 'searchapp/result.html',
-                          {'result_list':result_list})
-            print(goods_search_result)
 
-
+        return render(request, 'searchapp/result.html',
+        {'result_list':result_list})
 
 
     def get_context_data(self, **kwargs):#①-2(taguchi)
