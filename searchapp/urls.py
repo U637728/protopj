@@ -1,7 +1,13 @@
-from . import views
-
+'''
+アプリURLの設定を行っている。
+path('', views.IndexView.as_view(), name='index'),
+    …特に指定のない場合はIndexViewクラスに飛ばす
+path('result/', views.ResultList.as_view(), name='result'),
+    …パスの末尾にresult/を指定された場合はResultListクラスに飛ばす
+'''
 from django.urls import path
-from django.conf.urls import url
+
+from . import views
 
 
 app_name = 'searchapp'
@@ -9,7 +15,4 @@ app_name = 'searchapp'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('result/', views.ResultList.as_view(), name='result'),
-#    path('result/', views.TestView.as_view(), name='result'),
-    #path('', views.Index, name='index'),
 ]
-

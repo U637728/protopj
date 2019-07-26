@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'searchapp.apps.SearchappConfig', #アプリ紐付け
-    'bootstrap4', #bootstrap4紐付け
+    'searchapp.apps.SearchappConfig',  # アプリ紐付け
+    'bootstrap4',  # bootstrap4紐付け
 ]
 
 MIDDLEWARE = [
@@ -89,13 +89,15 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'protodb',
         'USER': 'root',
-        'PASSWORD': 'rootpassword', # ローカル端末にインストールしたときのパスワード
+        'PASSWORD': 'rootpassword',  # ローカル端末にインストールしたときのパスワード
         'HOST': 'localhost',
         'PORT': '3306',
-        'ATOMIC_REQUESTS': True, # トランザクションの有効範囲をリクエストの開始から終了までに設定
+        'ATOMIC_REQUESTS': True,
+        # ↑トランザクションの有効範囲をリクエストの開始から終了までに設定
         'OPTIONS': {
             # 06/21：「, NO」の間のスペースを外してサーバを起動してみたところ、問題なく動作した
-            'sql_mode': 'TRADITIONAL,NO_AUTO_VALUE_ON_ZERO', # 桁溢れの登録時にエラー（厳密モード）
+            'sql_mode': 'TRADITIONAL,NO_AUTO_VALUE_ON_ZERO',
+            # ↑桁溢れの登録時にエラー（厳密モード）
             },
     }
 }
@@ -105,16 +107,21 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.\
+        UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.\
+        MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.\
+        password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.\
+        password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -144,9 +151,9 @@ SESSION_COOKIE_AGE = 600
 SESSION_SAVE_EVERY_REQUEST = True
 
 INTERNAL_IPS = [
-     '127.0.0.1',
+    '127.0.0.1',
 ]
-SHOW_TOOLBAR_CALLBACK =False
+SHOW_TOOLBAR_CALLBACK = False
 
 # ログ取得
 LOGGING = {

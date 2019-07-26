@@ -5,20 +5,13 @@
 <form method="post"  class="form-inline">
 <!-- セキュリティ対策 -->
 {% csrf_token %}
-<div id ="container">
-    <!--<select class="form-control">
-        <option></option>
-        {% for field in categorypulldown %}
-        <option>{{ field.categoryname }}</option>
-        {% endfor %}
-   </select>-->
-     <label>検索条件</label>
+<div style="display:inline-flex">
+     <!--<label>検索条件</label>-->
       {% for aa in search_value %}
      {{ aa }}
      {% endfor %}
-
-     <!--<input type="text" class="form-control" placeholder="フリーワード検索">-->
-     <input class="btn btn-success offset-md-8 col-md-3" type="submit" id="button" name="button" value="🔍">
+     <!--<input class="btn btn-success offset-md-8 col-md-3" type="submit" id="button" name="button" value="🔍">-->
+     <button type="submit" class="btn col-md-2">🔍</button>
 </div>
 </form>
 

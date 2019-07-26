@@ -1,53 +1,48 @@
-from . import models
-
+"""
+内部構成
+class CategorySearchField
+    def label_from_instance
+class CategorySearchForm
+class GoodsSearchForm
+"""
 from django import forms
 
 from .models import CategoryTBL
-from django.forms import ModelChoiceField
 
-
-"""
-class GoodsSearchForm(forms.Form):
-    '''
-    categoryname = forms.ModelChoiceField(
-            models.CategoryTBL.objects,
-            label = '商品名',
-            required = False,
-#            queryset = CategoryTBL.objects.all,
-            to_field_name='categoryname'
-        )
-
-    searchchar = forms.CharField(
-            initial = '',
-            label = '検索文字列',
-            required = False,
-        )
-"""
-'''
-class GoodsSearchForm(forms.ModelChoiceField):
-    def label_from_instance(self,categoryname):
-         return f'{CategoryTBL.categoryname}'
-# product = forms.ModelChoiceField(models.Product.objects, label='商品')
-'''
 
 class CategorySearchField(forms.ModelChoiceField):
-    def label_from_instance(self,CategoryTBL ):
-        return f"{CategoryTBL.categoryname}"
+    """
+    プルダウンフォームを表示するためのModelChoiceFormを継承したクラス
+    label_from_instanceでプルダウンの値を上書きしている（？）
+    """
+    def label_from_instance(self, obj=CategoryTBL):
+        return f"{obj.categoryname}"
 
 
 class CategorySearchForm(forms.Form):
+    """
+    この中で↑のモデルを呼びだしてカテゴリプルダウンとして使用する
+    """
     category_name = CategorySearchField(
-            #models.CategoryTBL.objects,
-            label = '',
-            required = False,
-            queryset=CategoryTBL.objects.all(),
-            #to_field_name='categoryname',
-        )
+        label='',
+        required=False,
+        queryset=CategoryTBL.objects.all(),
+        empty_label='カテゴリ',
+    )
+
 
 class GoodsSearchForm(forms.Form):
-    search_char = forms.CharField(
-            initial = '',
-            label = '',
-            required = False,
-        )
+    """
+    フリーワード検索のフォームを表示する為のクラス
+    """
 
+    search_char = forms.CharField(
+        initial='',
+        label='',
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'フリーワード検索', 'class': 'class_name'
+                }
+        )
+    )

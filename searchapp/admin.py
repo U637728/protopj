@@ -1,3 +1,6 @@
+"""
+adminページ（管理サイト）の設定を行っているファイル
+"""
 from django.contrib import admin
 from .models import GoodsTBL
 from .models import CategoryTBL
