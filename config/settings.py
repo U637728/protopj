@@ -188,3 +188,12 @@ if DEBUG:
         'SHOW_TOOLBAR_CALLBACK': show_toolbar
     }
 '''
+
+# django-nose, coverage configure
+INSTALLED_APPS += ('django_nose',)
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+NOSE_ARGS = [
+    '--with-coverage',  # coverage を取る
+    '--cover-html',  # coverage を html で cover/ に出力する
+    '--cover-package=searchapp',  # app_name1 と app_name2 を coverage を取得する対象アプリ名に書き換える
+]

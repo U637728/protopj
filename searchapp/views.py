@@ -67,7 +67,7 @@ class IndexView(generic.ListView):
         context = super().get_context_data(**kwargs)
 
         # ①-4(taguchi)
-        # category\name、search_charにそれぞれ空白の文字列を設定する
+        # category_name、search_charにそれぞれ空白の文字列を設定する
         category_name = ''
         search_char = ''
 
@@ -91,10 +91,6 @@ class IndexView(generic.ListView):
         # フォームの入っているリスト'search_value'をテンプレートに返す。
         # ※contextって辞書型じゃないといけないと思うんだけどなんでこれでいいのかはわからない…。
         context['search_value'] = [category_form, search_form]
-        testquery = GoodsTBL.objects.all()
-        context['testquery'] = testquery
-        # self.request.session['test1'] = context['testquery']
-
         return context
 
 

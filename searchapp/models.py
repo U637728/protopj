@@ -9,11 +9,17 @@ from django.db import models
 
 # 新規テーブル作成　※１クラス＝１テーブルに該当
 class GoodsTBL(models.Model):
-    """商品モデル"""
-
+    '''
+    商品マスタの設定
+    '''
     class Meta:
-        """テーブル名を定義"""
-        db_table = 'goodstbl'
+        '''
+        modelのメタデータ(フィールド定義以外)を定義する。
+        '''
+        db_table = 'goodstbl'  # テーブル名
+        verbose_name_plural = '商品マスタ'  # 管理画面で表示されるテーブル名
+        # 一意な組み合わせを定義
+        unique_together = ('productno', 'sizename', 'colorname')
 
     # テーブルのカラムに対応するフィールドを定義
     # max_lengthは単純な文字数。半角全角、英数字関係なく合計でその文字数入るという設定
@@ -88,20 +94,24 @@ class GoodsTBL(models.Model):
 
     # 管理サイトに表示させる文字列を定義
     def __str__(self):
-        return self.goodsname
+        return '[' + self.goodsid + ']' +self.goodsname
 
 
 class CategoryTBL(models.Model):
-    """商品モデル"""
-
-    class Meta:
-        """テーブル名を定義"""
+    '''
+    カテゴリー名を管理するテーブル
+    '''
+    class Meta:  # テーブル名を定義
+        '''
+        modelのメタデータ(フィールド定義以外)を定義する。
+        '''
         db_table = 'categorytbl'
+        verbose_name_plural = 'カテゴリマスタ'
 
     categoryid = models.CharField(
         verbose_name='カテゴリID',
         primary_key=True,
-        max_length=12,
+        max_length=13,
     )
     highcategoryid = models.ForeignKey(
         'HighCategoryTBL',
@@ -117,21 +127,24 @@ class CategoryTBL(models.Model):
 
     # 管理サイトに表示させる文字列を定義
     def __str__(self):
-        return self.categoryid
-        # return self.categoryname
+        return '[' + self.categoryid + ']' + self.categoryname
 
 
 class HighCategoryTBL(models.Model):
-    """商品モデル"""
-
-    class Meta:
-        """テーブル名を定義"""
+    '''
+    上位カテゴリー名を管理するテーブル
+    '''
+    class Meta:  # テーブル名を定義
+        '''
+        modelのメタデータ(フィールド定義以外)を定義する。
+        '''
         db_table = 'highcategorytbl'
+        verbose_name_plural = '上位カテゴリマスタ'
 
     highcategoryid = models.CharField(
         verbose_name='上位カテゴリID',
         primary_key=True,
-        max_length=12,
+        max_length=10,
     )
     highcategoryname = models.CharField(
         verbose_name='上位カテゴリ名',
@@ -140,4 +153,5 @@ class HighCategoryTBL(models.Model):
 
     # 管理サイトに表示させる文字列を定義
     def __str__(self):
-        return self.highcategoryid
+        return '[' + self.highcategoryid + ']' +self.highcategoryname
+
