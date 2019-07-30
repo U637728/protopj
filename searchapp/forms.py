@@ -37,6 +37,7 @@ class GoodsSearchForm(forms.Form):
     """
 
     search_char = forms.CharField(
+        max_length=100,
         initial='',
         label='',
         required=False,

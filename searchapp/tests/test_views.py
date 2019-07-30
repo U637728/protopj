@@ -18,6 +18,9 @@ from unicodedata import category
 from searchapp.forms import CategorySearchForm
 from searchapp.forms import GoodsSearchForm
 
+#HttpRequestobjectをインポート
+from django.http import HttpRequest
+
 """
 UnitTestの書き方
 ・アプリケーションの下に test から始まるファイルを作る
@@ -72,4 +75,6 @@ class IndexViewTest(TestCase):
         category_name = ''
         default_data = {'category_name': category_name,
                         'search_char': search_char}
+        self.assertEqual(default_data, {'category_name': category_name,
+                        'search_char': search_char})
 

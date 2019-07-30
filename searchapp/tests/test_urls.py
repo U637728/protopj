@@ -5,6 +5,7 @@ from django.urls import path
 
 
 from searchapp.views import IndexView
+from searchapp.views import ResultList
 """
 UnitTestの書き方
 ・アプリケーションの下に test から始まるファイルを作る
@@ -38,7 +39,7 @@ class UrlResolveTests(TestCase):
         self.assertEqual(found.func.__name__, IndexView.__name__,'呼び出しているVIEWが想定と異なる')
 
     def test_url_resolves_resultlist(self):
-        """''result/を指定で、クラスResultListを呼び出している事を検証 """
+        """''/result/を指定で、クラスResultListを呼び出している事を検証 """
         found = resolve('/result/')
         test = ResultList.__name__
         self.assertEqual(found.func.__name__, ResultList.__name__,'呼び出しているVIEWが想定と異なる')
