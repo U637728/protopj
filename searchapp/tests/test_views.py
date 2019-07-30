@@ -21,6 +21,9 @@ from searchapp.forms import GoodsSearchForm
 #HttpRequestobjectをインポート
 from django.http import HttpRequest
 
+#Requestオブジェクトの作成ができるらしい…
+from django.test.client import RequestFactory
+
 """
 UnitTestの書き方
 ・アプリケーションの下に test から始まるファイルを作る
@@ -67,14 +70,19 @@ class IndexViewTest(TestCase):
         self.assertEqual(response.context['object_list'].first().category, check_category)
         self.assertEqual(response.context['object_list'].first().price, check_price)
         """
-    def test_get_context_data(self):
-        #contextに親メソッドを登録しておく
-        #context = super().get_context_data(**kwargs)
-        #searchcharに空白を登録しておく
+
+    def test_post(self):
+        #フォームの値が空白の場合、'(空白)'を取得する
+        category_name =  ''
         search_char = ''
-        category_name = ''
-        default_data = {'category_name': category_name,
-                        'search_char': search_char}
-        self.assertEqual(default_data, {'category_name': category_name,
-                        'search_char': search_char})
+
+        #チェック用
+        check_form_value = ['','']
+
+        #リクエストオブジェクトの作成
+        rf = RequestFactory()
+        Request = rf.post('', form_value = [category_name,search_char])
+
+        #取得した値の突合
+        self.assertEqual(Request,check_form_value)
 

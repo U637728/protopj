@@ -18,6 +18,8 @@ from django.urls import include , path
 from django.urls import path
 
 urlpatterns = [
+    # URLに'admin/'が指定されている場合、管理サイト(admin.site.urls)を参照する
     path('admin/', admin.site.urls),
+    # URLの指定なしの場合、searchapp内のurls.pyに指定されているURLの処理に移動する
     path('', include('searchapp.urls')),
 ]

@@ -150,11 +150,6 @@ STATIC_ROOT = '/var/www/{}/static' .format(PROJECT_NAME)
 SESSION_COOKIE_AGE = 600
 SESSION_SAVE_EVERY_REQUEST = True
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
-SHOW_TOOLBAR_CALLBACK = False
-
 # ログ取得
 LOGGING = {
     'version': 1,
