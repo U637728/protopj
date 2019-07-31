@@ -42,7 +42,6 @@ class IndexView(generic.ListView):
             self.request.POST.get('category_name', None),
             self.request.POST.get('search_char', None)
         ]
-
         # ②-2(taguchi)　
         # ②-1で作成したフォームの値を格納するリストをセッション（request.session）に受け渡す
         request.session['form_value'] = form_value
@@ -51,7 +50,7 @@ class IndexView(generic.ListView):
 
         # ②-3(taguchi)
         # redirectでページを遷移する
-        self.get(request)
+        #self.get(request)
         return redirect('searchapp:result')
 
     # ①-2(taguchi)
@@ -83,7 +82,6 @@ class IndexView(generic.ListView):
         # （カテゴリ検索フォーム=category_form）
         search_form = GoodsSearchForm(initial=default_data)
         category_form = CategorySearchForm(initial=default_data)
-
         # 入力フォームに空白を指定したテンプレートを呼び出し、返却する処理
 
         # ①-7(taguchi)
