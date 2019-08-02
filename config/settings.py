@@ -25,7 +25,7 @@ SECRET_KEY = '=zjgip(+y7x$z6sk-(n+u=0^8hkxkv$7!*0x0ip=*buld--v2c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

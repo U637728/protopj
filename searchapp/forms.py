@@ -36,8 +36,14 @@ class GoodsSearchForm(forms.Form):
     フリーワード検索のフォームを表示する為のクラス
     """
 
+    """
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
+    """
+
     search_char = forms.CharField(
-        max_length=100,
+        max_length=180,
         initial='',
         label='',
         required=False,
@@ -47,3 +53,11 @@ class GoodsSearchForm(forms.Form):
                 }
         )
     )
+    """
+    #バリデーションチェック
+    def clean_searchchar(self):
+        search_char = self.cleaned_data['search_char']
+        if len(search_char) >= 180:
+            raise forms.ValidationError('180文字以上')
+        return search_char
+    """

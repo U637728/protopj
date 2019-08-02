@@ -1,22 +1,16 @@
-{% extends 'searchapp/base.html' %}
 <!-- テンプレートの継承先 -->
+{% extends 'searchapp/base.html' %}
 <!-- オーバーライド対象：content=子テンプレートのブロック名 -->
 {% block content %}
-<form method="post"  class="form-inline">
+<form method="post"  name=test1 class="form-inline">
 <!-- セキュリティ対策 -->
 {% csrf_token %}
 <div style="display:inline-flex">
-     <!--<label>検索条件</label>-->
       {% for aa in search_value %}
      {{ aa }}
      {% endfor %}
-     <!--<input class="btn btn-success offset-md-8 col-md-3" type="submit" id="button" name="button" value="🔍">-->
-     <button type="submit" class="btn col-md-2">🔍</button>
+     <button type="submit" name="button1" class="btn col-md-2">&#x1F50D;</button>
+     <button type="submit" name="button2" class="btn col-md-2">🦄</button>
 </div>
 </form>
-
-<!--  {% for field in GoodsSearchResult %}
-    {{field.goodsname}}
-{% endfor %}-->
-
 {% endblock %}

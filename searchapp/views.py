@@ -34,31 +34,37 @@ class IndexView(generic.ListView):
         その値を元に商品の検索を実行
         検索結果をresult.htmlに返却する。
         """
+        if 'button1' in request.POST:
+            # ②-1(taguchi)
+            # フォーム値をセッションに格納（他画面で使いたい）
+            # 後からユーザが入力したフォームの値を格納するためのリストを作成（リスト名：form_value）
+            form_value = [
+                self.request.POST.get('category_name', None),
+                self.request.POST.get('search_char', None)
+            ]
+            # ②-2(taguchi)　
+            # ②-1で作成したフォームの値を格納するリストをセッション（request.session）に受け渡す
+            request.session['form_value'] = form_value
+            print(request.session['form_value'])
+            # generic/list.pyのget()メソッドが呼び出される　※本当にこのタイミング？もう少し上では？
 
-        # ②-1(taguchi)
-        # フォーム値をセッションに格納（他画面で使いたい）
-        # 後からユーザが入力したフォームの値を格納するためのリストを作成（リスト名：form_value）
-        form_value = [
-            self.request.POST.get('category_name', None),
-            self.request.POST.get('search_char', None)
-        ]
-        # ②-2(taguchi)　
-        # ②-1で作成したフォームの値を格納するリストをセッション（request.session）に受け渡す
-        request.session['form_value'] = form_value
-        print(request.session['form_value'])
-        # generic/list.pyのget()メソッドが呼び出される　※本当にこのタイミング？もう少し上では？
-
-        # ②-3(taguchi)
-        # redirectでページを遷移する
-        #self.get(request)
-        return redirect('searchapp:result')
+            # ②-3(taguchi)
+            # redirectでページを遷移する
+            return redirect('searchapp:result')
+        else:
+            """
+            実装手段（予想）
+            ①フォームバリューを取得する、カテゴリはそのまま放置
+            ②search_charの文字列を取得する
+            ③バリデーション通過用の文字列を格納する変数を用意する
+            """
 
     # ①-2(taguchi)
     # get_context_dataメソッドでcontextデータをテンプレートに渡すことが出来る
     def get_context_data(self, *, object_list=None, **kwargs):
         """
-         フォームの初期値に空白を設定したテンプレートを返すメソッド
-         ⇒最初にサイトを呼び出すときに必ず呼ばれる
+         初期値に空白を設定した入力フォームとプルダウンフォームを格納した変数を
+         contextに持たせてindex.htmlへ返すメソッド
         """
         # ①-3(taguchi)
         # 親クラスのメソッド呼び出し、変数contextに格納
@@ -69,6 +75,7 @@ class IndexView(generic.ListView):
         # category_name、search_charにそれぞれ空白の文字列を設定する
         category_name = ''
         search_char = ''
+        #search_char = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab'
 
         # ①-5(taguchi)
         # 初期値を格納するための辞書型を作成、変数名は「default_data」
