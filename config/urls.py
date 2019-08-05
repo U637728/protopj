@@ -12,9 +12,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
+# アドミン(管理者)機能のインストール
 from django.contrib import admin
-from django.urls import include , path
+# include機能(includeに含まれるURLに遷移する)のインストール
+from django.urls import include
+# path機能(文字列、url、逆引きの名前を指定して1まとまりとする)のインストール
 from django.urls import path
 
 urlpatterns = [

@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'searchapp.apps.SearchappConfig',  # アプリ紐付け
     'bootstrap4',  # bootstrap4紐付け
+    'django.contrib.humanize',  # humanize紐付け(数値を3桁区切りにする際に使用する。)
 ]
+
+# 数値を区切る桁数を設定する。
+NUMBER_GROUPING = 3
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
