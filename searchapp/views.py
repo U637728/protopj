@@ -31,67 +31,53 @@ class IndexView(generic.ListView):
     # クエリ結果を格納する変数の名前を定義している
     context_object_name = 'goods_search_result'
 
-    # ①-1 post関数を定義(?)(taguchi)
-    # 入らないけど関数自体は触っているみたいな動きをする。謎が多い。
+    # ①-1 post関数を定義
     def post(self, request):
         """
-        フォーカスアウトとボタン押下のif文
-        以下、ボタン押下時の説明
-        ユーザが入力した値を取得し、
-        その値を元に商品の検索を実行
-        検索結果をresult.htmlに返却する。
+        変数form_valueに画面上の入力フォームからpostで取得した値を
+        格納して、セッションに持たせるメソッド
         """
-        if 'button1' in request.POST:
-            # ②-1(taguchi)
-            # フォーム値をセッションに格納（次画面で使用）
-            # 後からユーザが入力したフォームの値を格納するためのリストを作成（リスト名：form_value）
-            form_value = [
-                self.request.POST.get('category_name', None),
-                self.request.POST.get('search_char', None)
-            ]
-            # ②-2(taguchi)　
-            # ②-1で作成したフォームの値を格納するリストをセッション（request.session）に受け渡す
-            request.session['form_value'] = form_value
-            print(request.session['form_value'])
-            # generic/list.pyのget()メソッドが呼び出される
+        # ②-1
+        # フォーム値をセッションに格納（次画面で使用）
+        # 後からユーザが入力したフォームの値を格納するためのリストを作成（リスト名：form_value）
+        form_value = [
+            self.request.POST.get('category_name', None),
+            self.request.POST.get('search_char', None)
+        ]
+        # ②-2　
+        # ②-1で作成したフォームの値を格納するリストをセッション（request.session）に受け渡す
+        request.session['form_value'] = form_value
+        # generic/list.pyのget()メソッドが呼び出される
 
-            # ②-3(taguchi)
-            # redirectでページを遷移する
-            return redirect('searchapp:result')
-        else:
-            """
-            以下フォーカスアウト時の説明
-            実装手段（予想）
-            ①フォームバリューを取得する、カテゴリはそのまま放置
-            ②search_charの文字列を取得する
-            ③バリデーション通過用の文字列を格納する変数を用意する
-            """
+        # ②-3
+        # redirectでページを遷移する
+        return redirect('searchapp:result')
 
-    # ①-2(taguchi)
+    # ①-2
     # get_context_dataメソッドでcontextデータをテンプレートに渡すことが出来る
     def get_context_data(self, *, object_list=None, **kwargs):
         """
          初期値に空白を設定した入力フォームとプルダウンフォームを格納した変数を
          contextに持たせてindex.htmlへ返すメソッド
         """
-        # ①-3(taguchi)
+        # ①-3
         # 親クラスのメソッド呼び出し、変数contextに格納
         # context＝テンプレートに使用できる文字列タグの存在を定義　※辞書型しか格納できない
         context = super().get_context_data(**kwargs)
 
-        # ①-4(taguchi)
+        # ①-4
         # 検索フォームの初期値を設定する処理
         #category_name、search_charにそれぞれ空白の文字列を設定する
         category_name = ''
         search_char = ''
 
-        # ①-5(taguchi)
+        # ①-5
         # 初期値を格納するための辞書型変数を作成、変数名は「default_data」
         # ①-4で設定した中身が空白文字列の変数を辞書の中に格納。
         default_data = {'category_name': category_name,
                         'search_char': search_char}
 
-        # ①-6(taguchi)
+        # ①-6
         # 予めインポートしてあるフォームに初期値を設定して、更にフォームを変数に格納する。
         # （文字列検索フォーム＝search_form）
         # （カテゴリ検索フォーム=category_form）
@@ -99,7 +85,7 @@ class IndexView(generic.ListView):
         category_form = CategorySearchForm(initial=default_data)
         # 入力フォームに空白を指定したテンプレートを呼び出し、返却する処理
 
-        # ①-7(taguchi)
+        # ①-7
         # ①-3で設定したcontextに①-6でフォームを格納した変数を格納
         # テンプレートにフォームを表示させる処理
         #表示用フォームが格納されたリスト'search_value'をテンプレートに返す。
